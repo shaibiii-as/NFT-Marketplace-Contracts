@@ -1,0 +1,78 @@
+{% extends 'nft_admin/index.html' %}
+{% block style %}
+<script>
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  var y = document.getElementById("myDIV2");
+  console.log(x.style.display);
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.height = "150px";
+  } else {
+    x.style.display = "none";
+    y.style.height = "60px";
+  }
+}
+
+</script>
+{% endblock %}
+{% block content %}
+<!-- DRAG/DROP COLUMNS REORDER -->
+<div class="panel">
+    <div class="panel-heading" id="myDIV2" style="height:60px">
+        <h3 class="panel-title">Favorites NFT Management</h3>
+        <button class="btn btn-info" style="float:right" type="button" onclick="myFunction()">Filter</button>
+        <form id="myDIV" style="display:none" class="form-horizontal" method="get">
+            {% csrf_token %}
+            <br><br>
+            <fieldset>
+                <div class="form-group">
+                    <label for="name" class="control-label">User Name: </label>
+                    {{ filter.form.user }}
+                    <label for="name" class="control-label">NFT Name: </label>
+                    {{ filter.form.nft }}
+                    <label for="name" class="control-label">Is Favorite: </label>
+                    {{ filter.form.is_favorite }}
+                </div>
+                <div class="form-group text-center">
+                    <input type="submit" class=" btn btn-success" value="Search">
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="panel-body">
+        <table id="datatable-column-reorder" class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <th>User Name</th>
+                <th>Favorite NFT Name</th>
+                <th>Date</th>
+                <th>Is Favorite</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for fav_nfts in obj %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ fav_nfts.user }}</td>
+                <td>{{ fav_nfts.nft }}</td>
+                <td>{{ fav_nfts.date }}</td>
+                <td>{{ fav_nfts.is_favorite }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if obj.has_previous %}
+        <a href="?page=1" class="btn btn-success btn-sm">&laquo; First</a>
+        <a href="?page={{obj.previous_page_number}}" class="btn btn-success btn-sm">Previous</a>
+        {% endif %}
+        page{{obj.number}} of {{obj.paginator.num_pages}}
+
+        {% if obj.has_next %}
+        <a href="?page={{obj.next_page_number}}" class="btn btn-success btn-sm">Next</a>
+        <a href="?page={{obj.paginator.num_pages}}" class="btn btn-success btn-sm">Last &raquo;</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+ {% extends 'nft_admin/index.html' %}
+ {% block content %}
+<div class="container-fluid">
+    <!-- DRAG/DROP COLUMNS REORDER -->
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Wallet Transaction Management</h3>
+        </div>
+        <form method="get" style="margin-left:15px">
+            {{  myfilter.form  }}
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+        <div class="panel-body">
+
+
+            <table id="datatable-column-reorder" class="table table-hover table-bordered">
+                <thead>
+
+                    <tr>
+                        <th>Wallet</th>
+                        <th>Ammount</th>
+                        <th>Transaction Type</th>
+                        <th>Transaction Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for wallet_transaction in obj %}
+                    <tr>
+                        <td>{{ wallet_transaction.wallet.id}}</td>
+                        <td> {{ wallet_transaction.amount }}</td>
+                        <td> {{ wallet_transaction.transaction_type}}</td>
+                        <td> {{ wallet_transaction.transaction_type}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if obj.has_previous %}
+            <a href="?page=1" class="btn btn-success btn-sm">&laquo; First</a>
+             <a href="?page={{obj.previous_page_number}}" class="btn btn-success btn-sm">Previous</a>
+            {% endif %}
+            page{{obj.number}} of {{obj.paginator.num_pages}}
+
+             {% if obj.has_next %}
+            <a href="?page={{obj.next_page_number}}" class="btn btn-success btn-sm">Next</a>
+             <a href="?page={{obj.paginator.num_pages}}" class="btn btn-success btn-sm">Last &raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'nft_admin/index.html' %}
+{% block content %}
+<div class="container-fluid">
+    <!-- DRAG/DROP COLUMNS REORDER -->
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">NFT </h3>
+            <form method="get">
+                {{ myfilter.form }}
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+        </div>
+
+
+        <div class="panel-body ">
+
+
+            <table id="datatable-column-reorder" class="table table-hover table-bordered">
+                <thead>
+
+                <tr>
+                    <th>Sr No.</th>
+
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Royalty</th>
+                    <th>Size</th>
+                    <th>No_of_copies</th>
+                    <th>Sale_type</th>
+                    <th>Is_hidden</th>
+                    <th>Owner</th>
+                    <th>Price</th>
+                    <th colspan="1">Operations</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for nft_obj in obj %}
+
+                <tr>
+                    <td>{{forloop.counter}}</td>
+
+                    <td>{{nft_obj.name}}</td>
+                    <td>{{nft_obj.description}}</td>
+                    <td><img src="{{nft_obj.image.url}} " style="width:40px;height:40px;border-radius:10px"></td>
+                    <td>{{nft_obj.royalty}}</td>
+                    <td>{{nft_obj.size}}</td>
+                    <td>{{nft_obj.no_of_copies}}</td>
+                    <td>{{nft_obj.sale_type}}</td>
+                    <td>{{nft_obj.is_hidden}}</td>
+                    <td>{{nft_obj.owner}}</td>
+                    <td>{{nft_obj.price}}</td>
+                    <td>
+                        <button class="btn btn-danger"><a style="text-decoration:none; color:white"
+                                                          href="{% url 'nft_management:nfts_delete' nft_obj.id %}"
+                        > <i class="fa fa-trash"></i>Delete</a>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if obj.has_previous %}
+            <a href="?page=1" class="btn btn-success btn-sm">&laquo; First</a>
+            <a href="?page={{obj.previous_page_number}}" class="btn btn-success btn-sm">Previous</a>
+            {% endif %}
+            page{{obj.number}} of {{obj.paginator.num_pages}}
+
+            {% if obj.has_next %}
+            <a href="?page={{obj.next_page_number}}" class="btn btn-success btn-sm">Next</a>
+            <a href="?page={{obj.paginator.num_pages}}" class="btn btn-success btn-sm">Last &raquo;</a>
+            {% endif %}
+
+
+        </div>
+    </div>
+    {% endblock %}

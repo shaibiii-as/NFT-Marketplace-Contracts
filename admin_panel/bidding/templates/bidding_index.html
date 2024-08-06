@@ -1,0 +1,61 @@
+{% extends 'nft_admin/index.html' %}
+{% block content %}
+<div class="container-fluid">
+    <!-- DRAG/DROP COLUMNS REORDER -->
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Bidding Management</h3>
+        </div>
+        <form method="get" style="margin-left:15px;margin-top:10px">
+            {{ myfilter.form }}
+            <button class="btn btn-primary btn-sm" type="submit">Search</button>
+        </form>
+        <div class="panel-body">
+            <table id="datatable-column-reorder" class="table table-hover table-bordered">
+                <thead>
+
+                <tr>
+                    <th>Offer By</th>
+                    <th>Start Date</th>
+                    <th>Bidding Price</th>
+                    <th>Expiry Date</th>
+                    <th>Status</th>
+                    <th>NFT</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for bidding in obj %}
+                <tr>
+                    <td>{{ bidding.offer_by }}</td>
+                    <td> {{ bidding.bidding_date }}</td>
+                    <td> {{ bidding.price }}</td>
+                    <td>{{ bidding.expiry_date }}</td>
+                    <td>{{ bidding.status }}</td>
+                    <td>{{ bidding.nft }}</td>
+                    <td>
+                        <button class="btn btn-danger"><a style="text-decoration:none; color:white"
+                                                          href="{% url 'bidding:bidding-delete' bidding.id %}"><i
+                                class="fa fa-trash"></i> Delete</a>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+            <div style="margin-left:10px">
+                {% if obj.has_previous %}
+                <a href="?page=1" class="btn btn-success btn-sm">&laquo; First</a>
+                <a href="?page={{obj.previous_page_number}}" class="btn btn-success btn-sm">Previous</a>
+                {% endif %}
+                page{{ obj.number}} of {{obj.paginator.num_pages }}
+
+                {% if obj.has_next %}
+                <a href="?page={{obj.next_page_number}}" class="btn btn-success btn-sm">Next</a>
+                <a href="?page={{obj.paginator.num_pages}}" class="btn btn-success btn-sm">Last &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endblock %}

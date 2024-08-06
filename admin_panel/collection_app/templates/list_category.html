@@ -1,0 +1,108 @@
+{% extends 'nft_admin/index.html' %}
+{% block style %}
+<script>
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  var y = document.getElementById("myDIV2");
+  console.log(x.style.display);
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.height = "180px";
+  } else {
+    x.style.display = "none";
+    y.style.height = "80px";
+  }
+}
+
+
+</script>
+{% endblock %}
+{% block content %}
+<!-- DRAG/DROP COLUMNS REORDER -->
+<div class="panel">
+
+    <div class="panel-heading" id="myDIV2" style="padding-bottom: 45px">
+        <h3 class="panel-title">Category Management</h3>
+        <div style="float: right">
+            <a href="{% url 'nft_management:create-category' %}">
+                <button type="button" class="btn btn-success btn-floating btn-md">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </a>
+        </div>
+        <br><br><br>
+        <button class="btn btn-info" style="float:right" type="button" onclick="myFunction()">Filter</button>
+        <form id="myDIV" style="display:none" class="form-horizontal" method="get">
+            {% csrf_token %}
+            <br><br>
+            <fieldset>
+                <div class="form-group">
+                    <label for="name" class="control-label">Name: </label>
+                    {{ filter.form.name }}
+                    <label for="is_active" class="control-label">Is_Active: </label>
+                    {{ filter.form.is_active }}
+                    <label for="is_removed" class="control-label">Is_removed: </label>
+                    {{ filter.form.is_removed }}
+                </div>
+                <div class="form-group text-center">
+                    <input type="submit" class=" btn btn-success" value="Search">
+                </div>
+            </fieldset>
+        </form>
+
+    </div>
+
+    <div class="panel-body">
+        <table id="datatable-column-reorder" class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <th>Name</th>
+                <th>Is Active</th>
+                <th>Is Removed</th>
+                <th>Created at</th>
+                <th colspan="2">Operations</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in obj %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ category.name }}</td>
+                <td>{{ category.is_active }}</td>
+                <td>{{ category.is_removed }}</td>
+                <td>{{ category.created_at }}</td>
+                <td>
+                    <button class="btn btn-info btn-sm">
+                        <a href="{% url 'nft_management:update-category' category.id %}"
+                           style="text-decoration:none; color:white">
+                            <i class="fa fa-pencil-square-o"></i>Update
+                        </a>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-sm">
+                        <a href="{% url 'nft_management:delete-category' category.id %}"
+                           style="text-decoration:none; color:white"><i class="fa fa-trash"></i>Delete </a>
+
+
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+        {% if obj.has_previous %}
+        <a href="?page=1" class="btn btn-success btn-sm">&laquo; First</a>
+        <a href="?page={{obj.previous_page_number}}" class="btn btn-success btn-sm">Previous</a>
+        {% endif %}
+        page{{obj.number}} of {{obj.paginator.num_pages}}
+
+        {% if obj.has_next %}
+        <a href="?page={{obj.next_page_number}}" class="btn btn-success btn-sm">Next</a>
+        <a href="?page={{obj.paginator.num_pages}}" class="btn btn-success btn-sm">Last &raquo;</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

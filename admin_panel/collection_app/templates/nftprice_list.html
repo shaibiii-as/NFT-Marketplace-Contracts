@@ -1,0 +1,60 @@
+{% extends 'nft_admin/index.html' %}
+{% block content %}
+<div class="container-fluid">
+    <!-- DRAG/DROP COLUMNS REORDER -->
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">NFT Price History</h3>
+            <form method="get" style="margin-left:15px;margin-top:10px">
+                {{ myfilter.form }}
+                <button class="btn btn-primary btn-sm" type="submit" style="margin-left:10px">Search</button>
+            </form>
+        </div>
+
+
+        <div class="panel-body ">
+
+
+            <table id="datatable-column-reorder" class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Price</th>
+                    <th>Nft</th>
+                    <th>Is Active</th>
+                    <th>Date</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for nft_obj in obj %}
+
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{nft_obj.price}}</td>
+                    <td>{{nft_obj.nft}}</td>
+                    <td>{{nft_obj.is_active}}</td>
+                    <td>{{nft_obj.date}}</td>
+                </tr>
+                {% endfor %}
+
+
+                </tbody>
+
+            </table>
+            {% if obj.has_previous %}
+            <a href="?page=1" class="btn btn-success btn-sm">&laquo; First</a>
+            <a href="?page={{obj.previous_page_number}}" class="btn btn-success btn-sm">Previous</a>
+            {% endif %}
+            page{{obj.number}} of {{obj.paginator.num_pages}}
+
+            {% if obj.has_next %}
+            <a href="?page={{obj.next_page_number}}" class="btn btn-success btn-sm">Next</a>
+            <a href="?page={{obj.paginator.num_pages}}" class="btn btn-success btn-sm">Last &raquo;</a>
+            {% endif %}
+
+
+        </div>
+    </div>
+    {% endblock %}

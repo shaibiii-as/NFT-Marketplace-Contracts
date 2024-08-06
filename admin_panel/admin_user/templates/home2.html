@@ -1,0 +1,87 @@
+{% extends 'nft_admin/index.html' %}{% load static %}
+{% block content %}
+<div class="main" style="width:-webkit-fill-available;">
+    <!-- MAIN CONTENT -->
+    <div class="row panel-body ">
+
+        <div class="col-12">
+            <p class="alert alert-info"> All Users </p>
+        </div>
+        <div class="col-12" style="margin-left:15px">
+            <form method="GET">
+                {{myfilter.form}}
+                <button type="submit" class="btn btn-primary btn-sm" style="margin-left:5px">Search</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-12" style="overflow:auto;">
+        {% if user %}
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Email</th>
+                <th scope="col">UserName</th>
+                <th scope="col">First_Name</th>
+                <th scope="col">Last_Name</th>
+
+                <th scope="col">Created_at</th>
+
+                <th scope="col">Is_active</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in obj %}
+            <tr>
+                <th>{{user.id}}</th>
+                <td>{{user.email}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.first_name}}</td>
+                <th>{{user.last_name}}</th>
+
+                <td>{{user.created_at}}</td>
+
+                <td>{{user.is_active}}</td>
+                <td>
+                    <div class="btn-group-vertical ">
+                        <a href="{% url 'admin_user:deletepost' user.id %}" class="btn btn-danger btn-sm  "
+                           style="margin:3px;"><i class="fa fa-trash"></i>Delete</a>
+
+                    </div>
+                </td>
+                <td>
+                    <div class="btn-group-vertical ">
+
+                        <a href="{% url 'admin_user:profiles_view' user.id %}" class=" btn btn-info btn-sm "
+                           style="margin:3px;"><i class="fa fa-eye" style="color:white;font-size:20px;"></i></a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <h4 class="text-center alert alert-warning">No Records</h4>
+        {% endif %}
+        <div style="margin-left:10px">
+        {% if obj.has_previous %}
+        <a href="?page=1" class="btn btn-success btn-sm">&laquo; First</a>
+        <a href="?page={{obj.previous_page_number}}" class="btn btn-success btn-sm">Previous</a>
+        {% endif %}
+        page{{obj.number}} of {{obj.paginator.num_pages}}
+
+        {% if obj.has_next %}
+        <a href="?page={{obj.next_page_number}}" class="btn btn-success btn-sm">Next</a>
+        <a href="?page={{obj.paginator.num_pages}}" class="btn btn-success btn-sm">Last &raquo;</a>
+        {% endif %}
+            <div>
+
+    </div>
+</div></div></div>
+{% if massage and error %}
+    <script>
+        alert('{{ massage }}')
+    </script>
+{% endif %}
+{% endblock content %}
