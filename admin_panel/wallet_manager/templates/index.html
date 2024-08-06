@@ -1,0 +1,56 @@
+ {% extends 'nft_admin/index.html' %}
+ {% block content %}
+
+    <!-- DRAG/DROP COLUMNS REORDER -->
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Wallet Management</h3>
+        </div>
+        <form method="get" style="margin-left:15px;margin-top:10px">
+            {{  myfilter.form  }}
+            <button class="btn btn-primary btn-sm" type="submit" style="margin-left:5px">Search</button>
+        </form>
+        <div class="panel-body">
+            <table id="datatable-column-reorder" class="table table-hover table-bordered">
+                <thead>
+
+                    <tr>
+                        <th>User</th>
+                        <th>Current Balance</th>
+                        <th>Wallet Address</th>
+                        <th>Is Verified</th>
+                        <th>Is Active</th>
+                        <th>Is Removed</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for wallet in obj %}
+                    <tr>
+                        <td>{{ wallet.user }}</td>
+                        <td> {{ wallet.current_balance }}</td>
+                        <td> {{ wallet.wallet_address }}</td>
+                        <td>{{wallet.is_verified}}</td>
+                        <td>{{wallet.is_active}} </td>
+                        <td>{{wallet.is_removed}}</td>
+
+                        <td><button class="btn btn-danger btn-sm"><a style="text-decoration:none; color:white"
+                        href="{% url 'wallet_manager:wallet-delete' wallet.id %}"> <i class="fa fa-trash"></i>Delete</a>
+                           </button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if obj.has_previous %}
+            <a href="?page=1" class="btn btn-success btn-sm">&laquo; First</a>
+             <a href="?page={{obj.previous_page_number}}" class="btn btn-success btn-sm">Previous</a>
+            {% endif %}
+            page{{obj.number}} of {{obj.paginator.num_pages}}
+
+             {% if obj.has_next %}
+            <a href="?page={{obj.next_page_number}}" class="btn btn-success btn-sm">Next</a>
+             <a href="?page={{obj.paginator.num_pages}}" class="btn btn-success btn-sm">Last &raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endblock %}

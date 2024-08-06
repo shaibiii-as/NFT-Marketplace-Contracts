@@ -1,0 +1,85 @@
+{% extends 'nft_admin/index.html' %}
+{% block content %}
+<!-- DRAG/DROP COLUMNS REORDER -->
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">FAQ Management</h3>
+
+    </div>
+    <div class="panel-body">
+        <div class="col-12" style="margin-left:15px">
+            <form method="GET">
+                {{faqfilter.form}}
+                <button type="submit" class="btn btn-info btn-sm">Search</button>
+            </form>
+        </div>
+        <span style="float:right; margin-bottom:30px">
+            <a href="{% url 'faq_contact:create-faq' %}">
+                <button class="btn btn-primary btn-sm">
+
+                        Create FAQ
+
+                </button>
+            </a>
+        </span>
+        <table id="datatable-column-reorder" class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Created_at</th>
+                <th>Updated</th>
+                <th>Is_active</th>
+                <th>Category</th>
+                <th>Updated_by</th>
+                <th colspan="2">Operations</th>
+
+            </tr>
+            </thead>
+            <tbody>
+             {% for faq in faq_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ faq.title }}</td>
+                <td>{{ faq.description }}</td>
+                <td>{{ faq.created_at }}</td>
+                <td>{{ faq.updated }}</td>
+                <td>{{ faq.is_active }}</td>
+                <td>{{ faq.category }}</td>
+                <td>{{ faq.updated_by }}</td>
+
+                <td>
+                    <button class="btn btn-info btn-sm">
+                        <a  href="{% url 'faq_contact:update-faq' faq.id %}"
+                            style="text-decoration:none; color:white">
+                        <i class="fa fa-pencil-square-o"></i>Update
+                        </a>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-sm">
+                        <a href="{% url 'faq_contact:delete-faq' faq.id %}"
+                           style="text-decoration:none; color:white">
+                            <i class="fa fa-trash"></i>Delete
+                        </a>
+                    </button>
+                </td>
+
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if obj.has_previous %}
+        <a href="?page=1" class="btn btn-success btn-sm">&laquo; First</a>
+        <a href="?page={{obj.previous_page_number}}" class="btn btn-success btn-sm">Previous</a>
+        {% endif %}
+        page{{obj.number}} of {{obj.paginator.num_pages}}
+
+        {% if obj.has_next %}
+        <a href="?page={{obj.next_page_number}}" class="btn btn-success btn-sm">Next</a>
+        <a href="?page={{obj.paginator.num_pages}}" class="btn btn-success btn-sm">Last &raquo;</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

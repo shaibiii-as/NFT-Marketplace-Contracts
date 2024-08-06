@@ -1,0 +1,67 @@
+{% extends 'nft_admin/index.html' %}{% load static %}
+{% block content %}
+<div class="main" style="width:-webkit-fill-available;">
+    <!-- MAIN CONTENT -->
+    <div class="row panel-body ">
+
+        <div class="col-12">
+            <p class="alert alert-info"> Profiles </p>
+        </div>
+        <div class="col-12">
+
+    <div class="col-12 " style="overflow:auto;">
+
+                <form class="text-center" method="GET">
+
+                    <div class="form-group"><label class="label-font mr-2">Profile Image: </label>
+                        <div>
+                            <div class="user-view-image ">
+                                <img src="{{profile.profile_image.url}}" style="width:120px;height:120px;border-radius:20px">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="d-flex name-email">
+                        <div class="form-group"><label class="label-font">Facebook: </label><span>{{ profile.facebook_link }}</span>
+                        </div>
+                    </div>
+                    <div class="d-flex name-email">
+                        <div class="form-group"><label class="label-font mr-2">Twitter: </label><span
+                                class="field-value">{{ profile.twitter_link }}</span></div>
+                    </div>
+                    <div class="d-flex name-email">
+                        <div class="form-group"><label class="label-font mr-2">G Plus: </label><span
+                                class="field-value">{{ profile.google_plus_link }}</span></div>
+                    </div>
+                    <div class="d-flex name-email">
+                        <div class="form-group"><label class="label-font mr-2"> Vine Link: </label><span class="field-value">{{ profile.vine_link }}</span>
+                        </div>
+                    </div>
+                    <div class="d-flex name-email">
+                        <div class="form-group"><label class="label-font mr-2">About:</label><span
+                                class="field-value"> {{ profile.about }}</span></div>
+                    </div>
+
+                    <div class="form-group"><label class="label-font mr-2">Banner Image: </label>
+                        <div>
+                            <div class="user-view-image"><img src="{{profile.banner_image.url}}" style="width:120px;height:120px;border-radius:20px">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex name-email">
+                        <div class="form-group"><label class="label-font mr-2">Is Removed : </label><span
+                                class="field-value"> {{ profile.is_removed }}</span></div>
+                    </div>
+
+
+
+                    <a href="{% url 'admin_user:home'%}" style="float:right" class="btn btn-danger">Close</a>
+            </form>
+        </div>
+    </div>
+
+    </div>
+</div></div></div>
+
+{% endblock content %}
